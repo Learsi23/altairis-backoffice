@@ -1,3 +1,5 @@
+<!-- EN ESPAÑOL -->
+
 # Backoffice Altairis – MVP
 
 MVP full-stack para gestión operativa de hoteles, desarrollado para demo comercial con FDSA.
@@ -23,3 +25,35 @@ MVP full-stack para gestión operativa de hoteles, desarrollado para demo comerc
 ## Notas
 - El MVP cumple con los requisitos esenciales para la demo comercial.
 - Diseñado para claridad operativa y facilidad de evolución.
+
+<!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+          <!-- ************************************** -->
+<!-- ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: -->
+
+<!-- IN ENGLISH -->
+
+# Altairis Backoffice – MVP
+
+MVP full-stack solution for hotel operational management, developed for commercial demo with FDSA.
+
+## Features
+- Hotel management (registration and paginated listing)
+- Booking validation (dates, required fields)
+- Clean architecture with DTOs and layer separation
+- Full execution with Docker
+
+## Technologies
+- Backend: .NET 9, Entity Framework Core, PostgreSQL
+- Frontend: Next.js 16, Tailwind CSS
+- Infrastructure: Docker, docker-compose
+
+## How to Run
+1. Clone the repository
+2. Run: `docker-compose up --build`
+3. Access:
+   - Frontend: [http://localhost:3000](http://localhost:3000)
+   - Backend API: [http://localhost:5182/swagger](http://localhost:5182/swagger)
+
+## Notes
+- The MVP meets essential requirements for the commercial demo.
+- Designed for operational clarity and ease of evolution.

@@ -1,14 +1,8 @@
 'use client';
 
-import Link from 'next/link';
 import { useState, useEffect } from 'react';
-
-type Hotel = {
-  id: number;
-  name: string;
-  location: string;
-  description: string;
-};
+import { hotelService } from '@/lib/services/hotelService';
+import type { Hotel, CreateHotelDto } from '@/types';
 
 export default function HomePage() {
   const [hotels, setHotels] = useState<Hotel[]>([]);
@@ -17,15 +11,13 @@ export default function HomePage() {
   const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Cargar hoteles al iniciar
   useEffect(() => {
-    fetchHotels();
+    loadHotels();
   }, []);
 
-  const fetchHotels = async () => {
+  const loadHotels = async () => {
     try {
-      const res = await fetch('http://localhost:5182/api/hotels');
-      const data = await res.json();
+      const data = await hotelService.getAll();
       setHotels(data);
     } catch (error) {
       console.error('Error al cargar hoteles:', error);
@@ -36,22 +28,19 @@ export default function HomePage() {
     e.preventDefault();
     setLoading(true);
 
-    const newHotel = { name, location, description };
+    const dto: CreateHotelDto = { name, location, description };
 
     try {
-      await fetch('http://localhost:5182/api/hotels', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newHotel),
-      });
-      // Recargar lista
-      await fetchHotels();
-      // Limpiar formulario
+      await hotelService.create(dto);
+      // Refrescamos la lista
+      await loadHotels();
+      // Limpiamos el formulario
       setName('');
       setLocation('');
       setDescription('');
     } catch (error) {
       console.error('Error al crear hotel:', error);
+      alert('Error al conectar con el servidor. Verifica que el backend esté corriendo.');
     } finally {
       setLoading(false);
     }
@@ -60,56 +49,79 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-4xl mx-auto">
-        <Link href="/dashboard" className='bg-blue-700 p-2 rounded hover:bg-blue-900'>Ver Dashboard Operativo</Link>
-        <h1 className="text-3xl font-bold text-gray-800 my-6">Hotel Altairis</h1>
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-3xl font-bold text-gray-800">Altairis Backoffice</h1>
+          <a
+            href="/dashboard"
+            className="px-4 py-2 bg-indigo-600 text-white rounded shadow hover:bg-indigo-700 transition"
+          >
+            Ver Dashboard Operativo
+          </a>
+        </div>
 
-        {/* Formulario */}
-        <div className="bg-white p-6 rounded-lg shadow mb-8">
-          <h2 className="text-xl font-semibold mb-4 text-gray-600">Añadir nuevo hotel</h2>
+        {/* Formulario de Creación */}
+        <div className="bg-white p-6 rounded-lg shadow-md mb-8 border border-gray-200">
+          <h2 className="text-xl font-semibold mb-4 text-gray-700">Registrar nuevo establecimiento</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Nombre del hotel"
-              className="w-full p-2 border rounded text-gray-500"
-              required
-            />
-            <input
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              placeholder="Ubicación"
-                    className="w-full p-2 border rounded text-gray-500"
-                    required
-            />
-            <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Descripción"
-              className="w-full p-2 border rounded text-gray-500"
-              rows={2}
-            />
+            <div>
+              <label className="block text-sm font-medium text-gray-600 mb-1">Nombre</label>
+              <input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Ej: Hotel Altairis Mar"
+                className="w-full p-2 border rounded text-gray-800 focus:ring-2 focus:ring-blue-500 outline-none"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-600 mb-1">Ubicación</label>
+              <input
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                placeholder="Ej: Palma de Mallorca, España"
+                className="w-full p-2 border rounded text-gray-800 focus:ring-2 focus:ring-blue-500 outline-none"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-600 mb-1">Descripción</label>
+              <textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Breve descripción del hotel..."
+                className="w-full p-2 border rounded text-gray-800 focus:ring-2 focus:ring-blue-500 outline-none"
+                rows={2}
+              />
+            </div>
             <button
               type="submit"
               disabled={loading}
-              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
+              className="w-full bg-blue-600 text-white font-semibold py-2 rounded hover:bg-blue-700 disabled:opacity-50 transition-colors"
             >
-              {loading ? 'Creando...' : 'Crear Hotel'}
+              {loading ? 'Procesando...' : 'Añadir al Inventario'}
             </button>
           </form>
         </div>
 
-        {/* Lista de hoteles */}
+        {/* Listado de Hoteles */}
         <div>
-          <h2 className="text-xl font-semibold mb-4 text-gray-800">Hoteles registrados</h2>
+          <h2 className="text-xl font-semibold mb-4 text-gray-800">Hoteles en Sistema</h2>
           {hotels.length === 0 ? (
-            <p className="text-gray-500">No hay hoteles aún.</p>
+            <div className="text-center p-10 bg-white rounded border border-dashed border-gray-300">
+              <p className="text-gray-500">No hay hoteles registrados en la base de datos.</p>
+            </div>
           ) : (
-            <div className="space-y-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {hotels.map((hotel) => (
-                <div key={hotel.id} className="bg-white p-4 rounded border">
-                  <h3 className="font-bold text-lg text-gray-800">{hotel.name}</h3>
-                  <p className="text-gray-600">{hotel.location}</p>
-                  <p className="text-gray-500 text-sm mt-1">{hotel.description}</p>
+                <div key={hotel.id} className="bg-white p-5 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition">
+                  <div className="flex justify-between items-start">
+                    <h3 className="font-bold text-lg text-indigo-900">{hotel.name}</h3>
+                    <span className="text-xs bg-gray-100 text-gray-500 px-2 py-1 rounded">ID: {hotel.id}</span>
+                  </div>
+                  <p className="text-gray-600 flex items-center mt-1">
+                    <span className="mr-1">📍</span> {hotel.location}
+                  </p>
+                  <p className="text-gray-500 text-sm mt-3 italic">{hotel.description}</p>
                 </div>
               ))}
             </div>
