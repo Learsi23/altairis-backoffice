@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
 type Hotel = {
@@ -58,15 +59,9 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">
-      {/* En algún lugar visible, ej: debajo del título */}
-      <a
-        href="/dashboard"
-        className="inline-block mb-6 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
-      >
-        Ver Dashboard Operativo
-      </a>
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">Hotel Altairis</h1>
+        <Link href="/dashboard" className='bg-blue-700 p-2 rounded hover:bg-blue-900'>Ver Dashboard Operativo</Link>
+        <h1 className="text-3xl font-bold text-gray-800 my-6">Hotel Altairis</h1>
 
         {/* Formulario */}
         <div className="bg-white p-6 rounded-lg shadow mb-8">

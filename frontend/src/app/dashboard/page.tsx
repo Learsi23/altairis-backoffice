@@ -11,6 +11,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import Link from 'next/link';
 
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -99,7 +100,8 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">Dashboard Operativo</h1>
+        <Link href="/" className='bg-blue-700 p-2 rounded hover:bg-blue-900'>Back to Home</Link>
+        <h1 className="text-3xl font-bold text-gray-800 my-6">Dashboard Operativo</h1>
 
         {/* Métricas clave */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
