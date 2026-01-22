@@ -1,14 +1,40 @@
-# Altairis Backoffice MVP 🚀
+Altairis Backoffice MVP 🚀
 
-This is the centralized operational MVP for **Viajes Altairis**. Designed to manage hotel catalogs, room types, and bookings efficiently in a B2B environment.
+Este es el MVP operativo centralizado para Viajes Altairis, diseñado para gestionar catálogos de hoteles, tipos de habitación y reservas de manera eficiente en un entorno B2B.
 
-## 🛠 Features
-- **Hotel Management**: Full CRUD for hotels and room types.
-- **Booking System**: Validated reservation logic with PostgreSQL integration.
-- **Modern Stack**: Built with .NET 9, Next.js, and PostgreSQL.
+🛠 Funcionalidades
 
-## 📦 Deployment (Docker)
-The entire solution is containerized. To launch the database, backend, and frontend with a single command:
+Gestión de Hoteles: Crear, consultar, actualizar y eliminar hoteles y tipos de habitación.
 
-```bash
+Sistema de Reservas: Lógica validada de reservas con integración PostgreSQL.
+
+Dashboard Operativo: Métricas clave y gráfico de actividad de reservas de los últimos 7 días.
+
+Stack Moderno: Desarrollado con .NET 9, Next.js y PostgreSQL.
+
+📦 Despliegue (Docker)
+
+Toda la solución está contenida en Docker. Para levantar la base de datos, el backend y el frontend con un solo comando:
+
 docker-compose up --build
+
+
+💡 Nota: Para probar el flujo completo, crea algunos hoteles desde el frontend. Verás cómo se reflejan inmediatamente en el Dashboard Operativo.
+
+🏃‍♂️ Cómo probar
+
+Abre el frontend (http://localhost:3000) y registra uno o varios hoteles.
+
+Crea reservas asociadas a los tipos de habitación.
+
+Dirígete al Dashboard Operativo para ver métricas y gráficos actualizados.
+
+⚡ Mejoras futuras (opcionales)
+
+Filtros avanzados en hoteles y reservas.
+
+Indicadores de ingresos y estado de ocupación.
+
+Mejoras visuales como tooltips y notificaciones.
+
+
