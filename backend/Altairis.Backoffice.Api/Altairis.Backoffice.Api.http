@@ -1,0 +1,51 @@
+@host = http://localhost:5182
+
+### 1. Crear un hotel
+POST {{host}}/api/hotels
+Content-Type: application/json
+
+{
+  "name": "Hotel Altairis Mallorca",
+  "location": "Palma de Mallorca",
+  "description": "Hotel de prueba para MVP"
+}
+
+### 2. Listar hoteles (página 1, tamaño 5)
+GET {{host}}/api/hotels?page=1&size=5
+Accept: application/json
+
+### 3. Crear un tipo de habitación para el hotel (usa el ID del hotel creado)
+# Cambia "1" por el ID que te devolvió el paso 1
+POST {{host}}/api/roomtypes
+Content-Type: application/json
+
+{
+  "hotelId": 1,
+  "name": "Suite Junior",
+  "capacity": 2,
+  "basePrice": 150.00
+}
+
+### 4. Crear una reserva (usa el RoomTypeId del paso 3)
+POST {{host}}/api/bookings
+Content-Type: application/json
+
+{
+  "roomTypeId": 1,
+  "customerName": "Israel Morales",
+  "checkIn": "2026-02-01T14:00:00",
+  "checkOut": "2026-02-05T12:00:00",
+  "totalPrice": 600.00
+}
+
+### 5. Probar validación: fechas inválidas
+POST {{host}}/api/bookings
+Content-Type: application/json
+
+{
+  "roomTypeId": 1,
+  "customerName": "Test Error",
+  "checkIn": "2026-02-10T14:00:00",
+  "checkOut": "2026-02-05T12:00:00",
+  "totalPrice": 300.00
+}
